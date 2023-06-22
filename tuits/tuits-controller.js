@@ -1,6 +1,6 @@
 //import posts from "./tuits.js";
 //let tuits = posts;
-import * as tuitsDao from '../tuits/tuits-dao.js'         // import the dao
+import * as tuitsDao from "./tuits-dao.js"         // import the dao
 
 const createTuit = async (req, res) => {
     const newTuit = req.body;                       // retrieve data from HTTP body

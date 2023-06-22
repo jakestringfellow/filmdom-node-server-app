@@ -5,4 +5,4 @@ const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
 }, { colection : "users" });
-export default usersSchema;
+export default userSchema;

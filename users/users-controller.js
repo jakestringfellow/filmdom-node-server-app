@@ -3,7 +3,7 @@
 import * as usersDao from "./users-dao.js";
 
 const UserController = (app) => {               // use express instance app to declare HTTP GET
-    app.get('/api/users', findUsers)            // request pattern /api/users to call a function
+    app.get('/api/users', findAllUsers)            // request pattern /api/users to call a function
     app.get('/api/users/:uid', findUserByID);
     app.post('/api/users', createUser);         // map URL pattern to handler function
     app.delete('/api/users/:uid', deleteUser);  
