@@ -7,8 +7,8 @@ import session from "express-session";
 import AuthController from './users/auth-controller.js';
 import mongoose from "mongoose";    // Load the mongoose library
 
-const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/tuiter';
-mongoose.connect(CONNECTION_STRING);
+const CONNECTION_STRING = 'mongodb://127.0.0.1:27017/tuiter';//process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/tuiter';
+const conn = mongoose.connect(CONNECTION_STRING);
 
 //mongoose.connect("mongodb://127.0.0.1:27012/tuiter"); // connect to the tuiter database
 
@@ -31,11 +31,12 @@ app.use(express.json());
 const port = process.env.PORT || 4000;
 
 AuthController(app);
+UserController(app);
 app.listen(port);
 
 //app.use(cors());
 //app.use(express.json());
 TuitsController(app);
 //HelloController(app);
-UserController(app);
+
 //app.listen(4000);

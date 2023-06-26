@@ -36,15 +36,12 @@ const deleteUser = async (req, res) => {
 
 const createUser = async (req, res) => {              // function invoked if URL matches pattern
     const newUser = await usersDao.createUser(req.body); //req.body;                   // extract new user from BODY in request
-    //newUser._id = (new Date()).getTime() + '';  // add an _id property with unique timestamp
-    //users.push(newUser);                        // append new user to users array
     res.json(newUser);                          // respond with new user to client
 }
 
 const findUserByID = async (req, res) => {
     const userId = req.params.uid;
     const user =  await usersDao.findUserById(userId);
-    //users.find(u => u._id === userId);
     res.json(user);
 }
 
@@ -63,6 +60,8 @@ const findAllUsers = async (req, res) => {
     const password = req.query.password;
     if (username && password) {
         const user = await usersDao.findUserByCredentials(username, password);
+        console.log(username);
+        console.log(password);
         if (user) {
             res.json(user);
         }
