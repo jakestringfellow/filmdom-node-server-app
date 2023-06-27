@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const movieSchema = mongoose.Schema({
     title: String,
-    imbdId: String,
+    imdbId: String,
     released: Date,
     genre: String,
     likes: {type: Number, default: 0}
