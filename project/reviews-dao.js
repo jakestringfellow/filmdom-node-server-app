@@ -6,7 +6,8 @@ export const createReview = (id, userId, reviewString) =>
     reviewsModel.create({movie: id, user: userId,  review: reviewString});
 
 export const findReviewsForUser = (userId) => 
-    reviewsModel.find({ user: userId }).populate("movie").exec();
+    reviewsModel.find({ user: userId }).populate("movie").populate("user").exec();
+    
 
 export const findReviewsForMovie = (imdbId) => 
-    reviewsModel.find({ movie: imdbId }).populate("user").exec();
+    reviewsModel.find({ movie: imdbId }).populate("user").populate("movie").exec();

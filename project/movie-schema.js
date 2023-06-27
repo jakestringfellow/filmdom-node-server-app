@@ -5,6 +5,7 @@ const movieSchema = mongoose.Schema({
     imdbId: String,
     released: Date,
     genre: String,
+    image: String,
     likes: {type: Number, default: 0}
     },
     { collection: "movies" }
