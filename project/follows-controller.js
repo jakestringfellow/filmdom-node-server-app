@@ -25,7 +25,7 @@ export default function FollowsController(app) {
         const followed = req.params.followed;
         const newFollow = await dao.createFollow({
             follower,
-            followed
+            followed,
         });
         res.json(newFollow);
     }
@@ -36,7 +36,7 @@ export default function FollowsController(app) {
         const followed = req.params.followed;
         const newFollow = await dao.deleteFollow({
             follower,
-            followed
+            followed,
         });
         res.json(newFollow);
     }
@@ -44,10 +44,10 @@ export default function FollowsController(app) {
     const findPeopleIFollowed = async (req, res) => {
         const currentUser = req.session["currentUser"];
         const follower = currentUser._id;
-        const follows = await dao.findFollowsByFollowed(follower);
+        const follows = await dao.findFollowsByFollower(follower);
         const people = follows.map((follow) => follow.followed);
         res.json(people);
-    }
+    };
 
     const findPeopleWhoFollowedMe = async (req, res) => {
         const currentUser = req.session["currentUser"];
@@ -55,7 +55,7 @@ export default function FollowsController(app) {
         const follows = await dao.findFollowsByFollowed(followed);
         const people = follows.map((follow) => follow.follower);
         res.json(people);
-    }
+    };
 
     app.get("/api/follows", findAllFollows);
     app.get("/api/follows/follower/:follower", findFollowsByFollower);
