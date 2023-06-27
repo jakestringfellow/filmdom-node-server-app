@@ -37,7 +37,8 @@ export default function ReviewsController(app) {
         const currentUser = req.session["currentUser"];
         const userId = currentUser._id;
         const reviews = await reviewsDao.findReviewsForUser(userId);
-        // const movies = reviews.map((review) => review.movie);
+        console.log("REVIEWS: ", reviews);
+        //const movies = reviews.map((review) => review.movie);
         // res.json(movies);
         res.json(reviews);
     };

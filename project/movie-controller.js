@@ -8,12 +8,16 @@ export default function MovieController(app) {
     }
 
     const findMovieById = async (req, res) => {
+        console.log("findMovieById called")
         const id = req.params.id
+        console.log("this is the id", id);
         const movie = await dao.findMovieById(id)
+        console.log("movie: ", movie);
         res.json(movie)
     }
 
     const findMovieByMovieId = async (req, res) => {
+        
         const movieId = req.params.movieId
         const movie = await dao.findMovieByMovieId(movieId)
         res.json(movie)

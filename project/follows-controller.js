@@ -16,6 +16,7 @@ export default function FollowsController(app) {
     const findFollowsByFollowed = async (req, res) => {
         const followed = req.params.followed;
         const follows = await dao.findFollowsByFollowed(followed);
+        console.log("follows", follows);
         res.json(follows);
     }
 
@@ -53,6 +54,7 @@ export default function FollowsController(app) {
         const currentUser = req.session["currentUser"];
         const followed = currentUser._id;
         const follows = await dao.findFollowsByFollowed(followed);
+        console.log("FOLLOWS: ", follows)
         const people = follows.map((follow) => follow.follower);
         res.json(people);
     };
