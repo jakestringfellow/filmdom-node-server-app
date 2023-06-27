@@ -8,6 +8,7 @@ import AuthController from './users/auth-controller.js';
 import mongoose from "mongoose";    // Load the mongoose library
 import MovieController from './project/movie-controller.js';
 import FollowsController from './project/follows-controller.js';
+import ReviewsController from './project/reviews-controller.js';
 
 const CONNECTION_STRING = 'mongodb://127.0.0.1:27017/tuiter';//process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/tuiter';
 const conn = mongoose.connect(CONNECTION_STRING);
@@ -36,6 +37,7 @@ UserController(app);
 TuitsController(app);
 MovieController(app);
 FollowsController(app);
+ReviewsController(app);
 
 const port = process.env.PORT || 4000;
 app.listen(port);
