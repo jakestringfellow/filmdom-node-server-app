@@ -20,9 +20,9 @@ export default function MovieController(app) {
     }
 
     const createMovie = async (req, res) => {
-        const movie = req.body
-        const newMovie = await dao.createMovie(movie)
-        res.json(newMovie)
+        const movie = req.body;
+        const newMovie = await dao.createMovie(movie);
+        res.json(newMovie);
     }
 
     const likeMovie = async (req, res) => {
@@ -52,10 +52,26 @@ export default function MovieController(app) {
         res.json(movies);
     };
 
+    const findLikesForMovie = async (req, res) => {
+        const id = req.params.id;
+        console.log("id", id);
+        const actualMovie = await dao.findMovieByMovieId(id);
+        if (actualMovie) {
+            console.log("actualMovie", actualMovie);
+            const likes = await dao.findLikesForMovie(actualMovie._id);
+            const users = likes.map((like) => like.user);
+            res.json(users);
+            return;
+        }
+        
+        res.json([]);
+    };
+
     app.get("/api/movies", findAllMovies);
     app.get("/api/movies/:id", findMovieById);
     app.get("/api/movies/movieId/:movieId", findMovieByMovieId);
     app.post("/api/movies", createMovie);
     app.post("/api/movies/movieId/:movieId/like", likeMovie);
     app.get("/api/movies/i/like", findMoviesILike);
+    app.get("/api/movies/movieId/:id/likes", findLikesForMovie);
 }
