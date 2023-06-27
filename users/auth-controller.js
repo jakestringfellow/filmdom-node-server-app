@@ -25,7 +25,7 @@ const AuthController = (app) => {
                 req.session["currentUser"] = user;
                 res.json(user);
             } else {
-                res.sendStatus(409);
+                res.sendStatus(403);
             }
         } else {
             res.sendStatus(403);
@@ -42,17 +42,16 @@ const AuthController = (app) => {
         }
     };
 
-    const logout = (req, res) => {
+    const logout = async (req, res) => {
         req.session.destroy();
         res.sendStatus(200);
     };
 
-    const update = (req, res) => {};
 
     app.post("/api/users/register", register);
     app.post("/api/users/login",    login);
     app.post("/api/users/profile",  profile);
     app.post("/api/users/logout",   logout);
-    app.put ("/api/users",          update);
+    
 };
 export default AuthController;

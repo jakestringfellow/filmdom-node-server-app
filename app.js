@@ -6,6 +6,7 @@ import TuitsController from "./tuits/tuits-controller.js"
 import session from "express-session";
 import AuthController from './users/auth-controller.js';
 import mongoose from "mongoose";    // Load the mongoose library
+import MovieController from './project/movie-controller.js';
 
 const CONNECTION_STRING = 'mongodb://127.0.0.1:27017/tuiter';//process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/tuiter';
 const conn = mongoose.connect(CONNECTION_STRING);
@@ -18,7 +19,7 @@ app.use(
     session({                       // Configure server session
         secret: "any string",
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
     })
 );
 app.use(
@@ -28,15 +29,18 @@ app.use(
     })
 );
 app.use(express.json());
-const port = process.env.PORT || 4000;
 
 AuthController(app);
 UserController(app);
+TuitsController(app);
+MovieController(app);
+
+const port = process.env.PORT || 4000;
 app.listen(port);
 
 //app.use(cors());
 //app.use(express.json());
-TuitsController(app);
+
 //HelloController(app);
 
 //app.listen(4000);
