@@ -58,8 +58,29 @@ export default function ReviewsController(app) {
         res.json([]);
     };
 
+    const findUserReviews = async (req, res) => {
+        const id = req.params.id;
+        const reviews = await reviewsDao.findReviewsForUser(id);
+        //console.log("REVIEWS: ", reviews);
+        //const movies = reviews.map((review) => review.movie);
+        // res.json(movies);
+        res.json(reviews);
+    }
+
+    // const findReviewsFromFollowing = async (req, res) => {
+    //     const currentUser = req.session["currentUser"];
+    //     const userId = currentUser._id;
+    //     const reviews = await reviewsDao.findReviewsForUser(userId);
+    //     //console.log("REVIEWS: ", reviews);
+    //     //const reviews = follows.map((follow) => follow.reviews);
+    //     // res.json(movies);
+    //     res.json(reviews);
+        
+    // }
+
     app.post("/api/movies/movieId/:movieId/review", reviewMovie);
-    app.get('/api/movies/reviews', findReviews);
+    app.get('/api/reviews', findReviews);
     app.get("/api/movies/i/review", findMyReviews);
     app.get("/api/movies/movieId/:id/reviews", findReviewsForMovie);
+    app.get("/api/movies/user/:id/review", findUserReviews);
 };
