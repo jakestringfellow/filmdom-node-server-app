@@ -1,5 +1,6 @@
 import * as reviewsDao from "./reviews-dao.js";
 import * as movieDao from "./movie-dao.js";
+import * as followsDao from "./follows-dao.js";
 
 export default function ReviewsController(app) {
 
@@ -67,6 +68,25 @@ export default function ReviewsController(app) {
         res.json(reviews);
     }
 
+    const findFollowingReviews = async (req, res) => {
+        const currentUser = req.session["currentUser"];
+        const follower = currentUser._id;
+        const allReviews = await reviewsDao.findReviews();
+        console.log("ALL REVIEWS", allReviews);
+        const follows = await followsDao.findFollowsByFollower(follower);
+        const followsIds = follows.map((follow) => JSON.stringify(follow.followed._id));
+        const followingReviews = allReviews.filter(review => followsIds.includes(JSON.stringify(review.user)));
+        console.log("USER RESULTS: ", allReviews.map((review) => review.user));
+        console.log("FOLLOWS ID RESULTS: ", followsIds);
+
+
+        // const people = follows.map((follow) => follow.followed);
+        // const reviews = people.map((person) => person = reviewsDao.findReviewsForUser(person._id));
+        console.log("FOLLOWED REVIEWS: ", followingReviews);
+        res.json(followingReviews);
+
+    }
+
     // const findReviewsFromFollowing = async (req, res) => {
     //     const currentUser = req.session["currentUser"];
     //     const userId = currentUser._id;
@@ -83,4 +103,5 @@ export default function ReviewsController(app) {
     app.get("/api/movies/i/review", findMyReviews);
     app.get("/api/movies/movieId/:id/reviews", findReviewsForMovie);
     app.get("/api/movies/user/:id/review", findUserReviews);
+    app.get("/api/movies/following/review", findFollowingReviews);
 };
