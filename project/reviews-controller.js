@@ -75,7 +75,7 @@ export default function ReviewsController(app) {
         console.log("ALL REVIEWS", allReviews);
         const follows = await followsDao.findFollowsByFollower(follower);
         const followsIds = follows.map((follow) => JSON.stringify(follow.followed._id));
-        const followingReviews = allReviews.filter(review => followsIds.includes(JSON.stringify(review.user)));
+        const followingReviews = allReviews.filter(review => followsIds.includes(JSON.stringify(review.user._id)));
         console.log("USER RESULTS: ", allReviews.map((review) => review.user));
         console.log("FOLLOWS ID RESULTS: ", followsIds);
 
@@ -85,6 +85,13 @@ export default function ReviewsController(app) {
         console.log("FOLLOWED REVIEWS: ", followingReviews);
         res.json(followingReviews);
 
+    }
+
+    const deleteReview = async (req, res) => {
+        const reviewIdToDelete = req.params.id;
+        const status = await reviewsDao.deleteReview(reviewIdToDelete);
+        console.log("DELETE STATUS: ", status);
+        res.json(status);
     }
 
     // const findReviewsFromFollowing = async (req, res) => {
@@ -104,4 +111,5 @@ export default function ReviewsController(app) {
     app.get("/api/movies/movieId/:id/reviews", findReviewsForMovie);
     app.get("/api/movies/user/:id/review", findUserReviews);
     app.get("/api/movies/following/review", findFollowingReviews);
+    app.delete("/api/reviews/:id", deleteReview);
 };
