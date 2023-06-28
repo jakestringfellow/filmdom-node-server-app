@@ -94,6 +94,13 @@ export default function ReviewsController(app) {
         res.json(status);
     }
 
+    const updateReview = async (req, res) => {
+        const reviewIdToUpdate = req.params.id;                           
+        const updates = req.body;                                  
+        const status = await reviewsDao.updateReview(reviewIdToUpdate, updates); 
+        res.json(status);                                                 
+    }
+
     // const findReviewsFromFollowing = async (req, res) => {
     //     const currentUser = req.session["currentUser"];
     //     const userId = currentUser._id;
@@ -112,4 +119,6 @@ export default function ReviewsController(app) {
     app.get("/api/movies/user/:id/review", findUserReviews);
     app.get("/api/movies/following/review", findFollowingReviews);
     app.delete("/api/reviews/:id", deleteReview);
+    app.put('/api/reviews/:id', updateReview);
+
 };

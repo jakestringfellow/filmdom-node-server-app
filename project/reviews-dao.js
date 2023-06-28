@@ -13,3 +13,6 @@ export const findReviewsForMovie = (imdbId) =>
     reviewsModel.find({ movie: imdbId }).populate("user").populate("movie").exec();
 
 export const deleteReview = (id) => reviewsModel.deleteOne({_id: id});
+
+export const updateReview = (id, review) => reviewsModel.updateOne({_id: id}, {$set: review});
+
