@@ -31,7 +31,8 @@ export default function ReviewsController(app) {
 
     const findReviews = async (req, res) => {
         const reviews = await reviewsDao.findReviews();
-        res.json(reviews);
+        const reversedReviews = reviews.reverse();
+        res.json(reversedReviews);
     }
 
     const findMyReviews = async (req, res) => {
@@ -41,7 +42,8 @@ export default function ReviewsController(app) {
         console.log("REVIEWS: ", reviews);
         //const movies = reviews.map((review) => review.movie);
         // res.json(movies);
-        res.json(reviews);
+        const reversedReviews = reviews.reverse();
+        res.json(reversedReviews);
     };
 
     const findReviewsForMovie = async (req, res) => {
@@ -52,7 +54,8 @@ export default function ReviewsController(app) {
             console.log("actualMovie", actualMovie);
             const reviews = await reviewsDao.findReviewsForMovie(actualMovie._id);
             //const users = reviews.map((review) => review.user);
-            res.json(reviews);
+            const reversedReviews = reviews.reverse();
+            res.json(reversedReviews);
             return;
         }
         
@@ -65,7 +68,8 @@ export default function ReviewsController(app) {
         //console.log("REVIEWS: ", reviews);
         //const movies = reviews.map((review) => review.movie);
         // res.json(movies);
-        res.json(reviews);
+        const reversedReviews = reviews.reverse();
+        res.json(reversedReviews);
     }
 
     const findFollowingReviews = async (req, res) => {
@@ -83,15 +87,26 @@ export default function ReviewsController(app) {
         // const people = follows.map((follow) => follow.followed);
         // const reviews = people.map((person) => person = reviewsDao.findReviewsForUser(person._id));
         console.log("FOLLOWED REVIEWS: ", followingReviews);
-        res.json(followingReviews);
+        const reversedReviews = followingReviews.reverse();
+        res.json(reversedReviews);
 
     }
 
     const deleteReview = async (req, res) => {
         const reviewIdToDelete = req.params.id;
-        const status = await reviewsDao.deleteReview(reviewIdToDelete);
-        console.log("DELETE STATUS: ", status);
-        res.json(status);
+        const currentUser = req.session["currentUser"];
+        const userReviews = await reviewsDao.findReviewsForUser(currentUser._id)
+        const userReviewIds = userReviews.map((review) => review._id.valueOf())
+        console.log("CURRENT USER: ",currentUser._id)
+        console.log(" USER REVIEWS: ", userReviewIds);
+        console.log("ID TO DELETE: ", reviewIdToDelete)
+        if (userReviewIds.includes(reviewIdToDelete) || currentUser.role === "admin") {
+            const status = await reviewsDao.deleteReview(reviewIdToDelete);
+            console.log("DELETE STATUS: ", status);
+            res.json(status);
+        }
+        // status = await reviewsDao.deleteReview(reviewIdToDelete);
+        
     }
 
     const updateReview = async (req, res) => {
