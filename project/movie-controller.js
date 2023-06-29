@@ -53,6 +53,7 @@ export default function MovieController(app) {
         const userId = currentUser._id;
         const likes = await dao.findLikesForUser(userId);
         const movies = likes.map((like) => like.movie);
+        console.log("MOVIES I LIKE: ", movies)
         res.json(movies);
     };
 
