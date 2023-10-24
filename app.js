@@ -22,7 +22,7 @@ const conn = mongoose.connect(CONNECTION_STRING);
 
 const app = express();
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Server running');
 })
 app.use(
     session({                       // Configure server session
