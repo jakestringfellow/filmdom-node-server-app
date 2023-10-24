@@ -1,2 +1,2 @@
 # tuiter-node-server-app
-Server component of the tuiter social media platform
+Server component of the filmdom social media platform
