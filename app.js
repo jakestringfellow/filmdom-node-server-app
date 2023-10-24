@@ -3,7 +3,7 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
-import HelloController from "./controllers/hello-controller.js"
+//import HelloController from "./controllers/hello-controller.js"
 import UserController from './users/users-controller.js';
 import TuitsController from "./tuits/tuits-controller.js"
 import session from "express-session";
@@ -20,10 +20,31 @@ const conn = mongoose.connect(CONNECTION_STRING);
 //mongoose.connect("mongodb://127.0.0.1:27012/tuiter"); // connect to the tuiter database
 
 
+
 const app = express();
-app.get('/', (req, res) => {
-    res.send('Server running');
-})
+
+const allowedOrigins = ["http://localhost:3000", "https://extraordinary-pie-42936b.netlify.app/"];
+
+app.use(
+    cors({                           // restrict cross origin resource sharing 
+        origin: function(origin, callback) {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.indexOf(origin) === -1) {
+                const msg = 'The CORS polciy for this site does not allow access from the specified origin: ${origin}';
+                return callback(new Error(msg), false);
+            }
+            return callback(null, true);
+        },
+        credentials: true,           // to the react application
+        methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+        preflightContinue: false, 
+        optionsSuccessStatus: 204,
+        //origin: "http://localhost:3000", 
+    })
+);
+
+app.use(express.json());
+
 app.use(
     session({                       // Configure server session
         secret: "any string",
@@ -31,13 +52,10 @@ app.use(
         saveUninitialized: false,
     })
 );
-app.use(
-    cors({                           // restrict cross origin resource sharing 
-        credentials: true,           // to the react application
-        origin: "http://localhost:3000", 
-    })
-);
-app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.send('Server running');
+});
 
 AuthController(app);
 UserController(app);
@@ -51,9 +69,3 @@ app.listen(port), () => {
     console.log('Server started on port ${port}');
 };
 
-//app.use(cors());
-//app.use(express.json());
-
-//HelloController(app);
-
-//app.listen(4000);
