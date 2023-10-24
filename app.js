@@ -21,6 +21,9 @@ const conn = mongoose.connect(CONNECTION_STRING);
 
 
 const app = express();
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+})
 app.use(
     session({                       // Configure server session
         secret: "any string",
@@ -44,7 +47,9 @@ FollowsController(app);
 ReviewsController(app);
 
 const port = process.env.PORT || 4000;
-app.listen(port);
+app.listen(port), () => {
+    console.log('Server started on port ${port}');
+};
 
 //app.use(cors());
 //app.use(express.json());
