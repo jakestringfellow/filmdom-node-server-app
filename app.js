@@ -23,7 +23,7 @@ const conn = mongoose.connect(CONNECTION_STRING);
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:3000", "https://extraordinary-pie-42936b.netlify.app/"];
+const allowedOrigins = ["http://localhost:3000", "https://filmdom.netlify.app/"];
 
 app.use(
     cors({                           // restrict cross origin resource sharing 
