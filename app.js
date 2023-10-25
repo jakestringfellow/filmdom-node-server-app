@@ -1,14 +1,16 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+
+
 import express from 'express';
 import cors from 'cors';
-//import HelloController from "./controllers/hello-controller.js"
+import session from "express-session";
+import mongoose from "mongoose";    // Load the mongoose library
+
+import AuthController from './users/auth-controller.js';
 import UserController from './users/users-controller.js';
 import TuitsController from "./tuits/tuits-controller.js"
-import session from "express-session";
-import AuthController from './users/auth-controller.js';
-import mongoose from "mongoose";    // Load the mongoose library
 import MovieController from './project/movie-controller.js';
 import FollowsController from './project/follows-controller.js';
 import ReviewsController from './project/reviews-controller.js';
