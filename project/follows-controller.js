@@ -22,6 +22,10 @@ export default function FollowsController(app) {
 
     const createFollow = async (req, res) => {
         const currentUser = req.session["currentUser"];
+        if (!currentUser) {
+            return res.status(400).send("No user in session");
+        }
+        console.log("Current user:", currentUser);
         const follower = currentUser._id;
         const followed = req.params.followed;
         const newFollow = await dao.createFollow({
@@ -33,6 +37,10 @@ export default function FollowsController(app) {
 
     const deleteFollow = async (req, res) => {
         const currentUser = req.session["currentUser"];
+        if (!currentUser) {
+            return res.status(400).send("No user in session");
+        }
+        console.log("Current user:", currentUser);
         const follower = currentUser._id;
         const followed = req.params.followed;
         const newFollow = await dao.deleteFollow({
@@ -43,7 +51,12 @@ export default function FollowsController(app) {
     }
 
     const findPeopleIFollowed = async (req, res) => {
+        console.log("Session data in findPeopleIFollowed:", req.session);
         const currentUser = req.session["currentUser"];
+        console.log("Current user:", currentUser);
+        if (!currentUser) {
+            return res.status(400).send("No user in session");
+        }
         const follower = currentUser._id;
         const follows = await dao.findFollowsByFollower(follower);
         const people = follows.map((follow) => follow.followed);
@@ -51,7 +64,12 @@ export default function FollowsController(app) {
     };
 
     const findPeopleWhoFollowedMe = async (req, res) => {
+        console.log("Session data in findPeopleWhoFollowedMe:", req.session);
         const currentUser = req.session["currentUser"];
+        console.log("Current user:", currentUser);
+        if (!currentUser) {
+            return res.status(400).send("No user in session");
+        }
         const followed = currentUser._id;
         const follows = await dao.findFollowsByFollowed(followed);
         console.log("FOLLOWS: ", follows)
