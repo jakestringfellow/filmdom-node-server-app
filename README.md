@@ -21,5 +21,8 @@ Features:
 - Movie and TV Reviews: Users can write reviews and rate movies/TV shows
 - Follow System: FOllow other users and see their activity on a personalized feed
 
+Known bugs:
+- Major: Currently, remote instances of filmdom do not allow for proper user login and registration. While this feature works locally, development on the remotely hosted version of the site is in progress.
+
 
 
