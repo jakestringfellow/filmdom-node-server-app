@@ -17,6 +17,8 @@ import ReviewsController from './project/reviews-controller.js';
 const CONNECTION_STRING = process.env.MONGO_URI;
 const SECRET_STRING = process.env.SECRET;
 
+console.log('Environment:', process.env.NODE_ENV);
+
 
 const app = express();
 
@@ -89,5 +91,6 @@ ReviewsController(app);
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
+
 });
 
