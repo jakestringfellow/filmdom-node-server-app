@@ -53,14 +53,13 @@ app.use(
 
 app.use(express.json());
 
-const MongoStore = connectMongo(session);
+
 
 app.use(
     session({                       // Configure server session
         secret: SECRET_STRING,
         resave: false,
         saveUninitialized: false,
-        store: new MongoStore({ mongooseConnection: mongoose.connection })
     })
 );
 
