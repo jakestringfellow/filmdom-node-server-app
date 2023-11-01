@@ -5,7 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import session from "express-session";
 import mongoose from "mongoose";    // Load the mongoose library
-import connectMongo from 'connect-mongo';
+import MongoStore from 'connect-mongo';
 
 import AuthController from './users/auth-controller.js';
 import UserController from './users/users-controller.js';
@@ -18,6 +18,8 @@ const CONNECTION_STRING = process.env.MONGO_URI;
 const SECRET_STRING = process.env.SECRET;
 
 
+const app = express();
+
 //const conn = mongoose.connect(CONNECTION_STRING);
 mongoose.connect(CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
@@ -29,7 +31,6 @@ mongoose.connect(CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology:
 
 
 
-const app = express();
 
 const allowedOrigins = ["http://localhost:3000", "https://filmdom.netlify.app"];
 
@@ -53,13 +54,24 @@ app.use(
 
 app.use(express.json());
 
+const sessionStore = MongoStore.create({
+    mongoUrl: CONNECTION_STRING,
+    collectionName: 'sessions'
+})
 
+//const MongoStore = connectMongo(session);
 
 app.use(
     session({                       // Configure server session
         secret: SECRET_STRING,
         resave: false,
         saveUninitialized: false,
+        store: sessionStore, //MongoStore.create({ mongooseConnection: mongoose.connection }),
+        cookie: {
+            secure: process.env.NODE_ENV === 'production',
+            httpOnly: true,
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        }
     })
 );
 
