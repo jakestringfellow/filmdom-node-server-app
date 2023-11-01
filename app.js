@@ -17,6 +17,7 @@ import ReviewsController from './project/reviews-controller.js';
 const CONNECTION_STRING = process.env.MONGO_URI;
 const SECRET_STRING = process.env.SECRET;
 
+
 //const conn = mongoose.connect(CONNECTION_STRING);
 mongoose.connect(CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
@@ -52,11 +53,14 @@ app.use(
 
 app.use(express.json());
 
+const MongoStore = connectMongo(session);
+
 app.use(
     session({                       // Configure server session
         secret: SECRET_STRING,
         resave: false,
         saveUninitialized: false,
+        store: new MongoStore({ mongooseConnection: mongoose.connection })
     })
 );
 
@@ -73,6 +77,6 @@ ReviewsController(app);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
-    console.log('Server started on port ${port}');
+    console.log(`Server started on port ${port}`);
 });
 
