@@ -23,6 +23,7 @@ const AuthController = (app) => {
             console.log(user);
             if (user) {
                 req.session["currentUser"] = user;
+                console.log('Session after setting currentUser:', req.session);
                 res.json(user);
             } else {
                 res.sendStatus(403);

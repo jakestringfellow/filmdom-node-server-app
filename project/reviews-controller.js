@@ -36,6 +36,7 @@ export default function ReviewsController(app) {
     }
 
     const findMyReviews = async (req, res) => {
+        console.log('Session in findMyReviews:', req.session);
         const currentUser = req.session["currentUser"];
         const userId = currentUser._id;
         const reviews = await reviewsDao.findReviewsForUser(userId);

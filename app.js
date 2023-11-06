@@ -5,7 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import session from "express-session";
 import mongoose from "mongoose";    // Load the mongoose library
-import MongoStore from 'connect-mongo';
+//import MongoStore from 'connect-mongo';
 
 import AuthController from './users/auth-controller.js';
 import UserController from './users/users-controller.js';
@@ -56,10 +56,11 @@ app.use(
 
 app.use(express.json());
 
-const sessionStore = MongoStore.create({
-    mongoUrl: CONNECTION_STRING,
-    collectionName: 'sessions'
-})
+// const sessionStore = MongoStore.create({
+//     mongoUrl: CONNECTION_STRING,
+//     collectionName: 'sessions'
+// })
+
 
 //const MongoStore = connectMongo(session);
 
@@ -67,16 +68,24 @@ app.use(
     session({                       // Configure server session
         secret: SECRET_STRING,
         resave: false,
-        saveUninitialized: false,
-        store: sessionStore, //MongoStore.create({ mongooseConnection: mongoose.connection }),
-        cookie: {
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: true,
-            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-        }
+        saveUninitialized: false, //true,
+        //store: sessionStore, //MongoStore.create({ mongooseConnection: mongoose.connection }),
+        //cookie: {
+        //    secure: process.env.NODE_ENV === 'production',
+        //    httpOnly: true,
+        //    sameSite: 'None',//process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        //    maxAge: 1000 * 60 * 60 * 24 // Setting cookie to expire after 24 hours
+        //}
     })
 );
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke');
+});
+
+// Endpoints
 app.get('/', (req, res) => {
     res.send('Server running');
 });
